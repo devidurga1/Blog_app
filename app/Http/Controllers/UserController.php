@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 class UserController extends Controller
+
 
 
 
@@ -38,9 +40,9 @@ class UserController extends Controller
         
         return view('users');
     }*/
+//this right code
 
-
-   /* public function index(Request $request)
+   public function index(Request $request)
     {
         if ($request->ajax()) {
             $users = User::orderBy('created_at', 'desc')->select(['id', 'name', 'email', 'created_at']);
@@ -57,12 +59,17 @@ class UserController extends Controller
 
         return view('users.index');
     }
-*/
 
 
-public function index(Request $request)
+
+/*public function index(Request $request)
     {
         if ($request->ajax()) {
+            $roles = Role::all();
+
+    // Query to fetch users with filtering
+    $users = User::query();
+    $users->with(['roles']);
             $users = User::select(['id', 'name', 'email', 'created_at'])
                 ->orderBy('created_at', 'desc');
 
@@ -85,36 +92,98 @@ public function index(Request $request)
 
         return view('users.index');
     }
+*/
+   
 
-   /* public function index(Request $request)
-{
+  /* public function index(Request $request)
+ {
+    $roles = Role::all(); // Fetch all roles for the dropdown
+
     if ($request->ajax()) {
-        $query = User::with('role')
-            ->orderByDesc('created_at');
+        $query = User::query()
+            ->with('role')
+            ->select('users.*');
 
-        if ($request->filled('name')) {
+        if ($request->has('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
 
-        if ($request->filled('email')) {
+        if ($request->has('email')) {
             $query->where('email', 'like', '%' . $request->input('email') . '%');
         }
 
-        if ($request->filled('role')) {
+        if ($request->has('role')) {
             $query->whereHas('role', function ($q) use ($request) {
-                $q->where('name', $request->input('role'));
+                $q->where('id', $request->input('role'));
             });
         }
 
         return DataTables::of($query)
-            ->addColumn('action', function ($user) {
-                return view('users.actions', compact('user'));
+            ->addColumn('actions', function ($user) {
+                $editUrl = route('users.edit', $user->id);
+                $showUrl = route('users.show', $user->id);
+                $deleteUrl = route('users.destroy', $user->id);
+
+                return new HtmlString(
+                    "<a href=\"$editUrl\" class=\"btn btn-warning btn-sm\">Edit</a>
+                     <a href=\"$showUrl\" class=\"btn btn-info btn-sm\">Show</a>
+                     <form method=\"POST\" action=\"$deleteUrl\" class=\"d-inline\">
+                         @csrf
+                         @method('DELETE')
+                         <button type=\"submit\" class=\"btn btn-danger btn-sm\" onclick=\"return confirm('Are you sure?')\">Delete</button>
+                     </form>"
+                );
             })
             ->make(true);
     }
 
-    $roles = Role::pluck('name', 'name'); // Get role names for dropdown
+    return view('users.index', compact('roles'));
+}
+*/
 
+
+
+/*public function index(Request $request)
+{
+    $roles = Role::all(); // Fetch all roles for the dropdown
+
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('role')
+            ->select('users.*');
+
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->has('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->has('role')) {
+            $query->whereHas('role', function ($q) use ($request) {
+                $q->where('id', $request->input('role'));
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('actions', function ($user) {
+                $editUrl = route('users.edit', $user->id);
+                $showUrl = route('users.show', $user->id);
+                $deleteUrl = route('users.destroy', $user->id);
+
+                return new HtmlString(
+                    "<a href=\"$editUrl\" class=\"btn btn-warning btn-sm\">Edit</a>
+                     <a href=\"$showUrl\" class=\"btn btn-info btn-sm\">Show</a>
+                     <form method=\"POST\" action=\"$deleteUrl\" class=\"d-inline\">
+                         @csrf
+                         @method('DELETE')
+                         <button type=\"submit\" class=\"btn btn-danger btn-sm\" onclick=\"return confirm('Are you sure?')\">Delete</button>
+                     </form>"
+                );
+            })
+            ->make(true);
+    }
     return view('users.index', compact('roles'));
 }*/
 
@@ -123,7 +192,9 @@ public function index(Request $request)
 
 
 
-    
+
+
+
 
 public function create()
     {

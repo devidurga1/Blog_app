@@ -42,3 +42,5 @@ Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
 // this route for posts
 Route::resource('posts', PostController::class);
+// this route for logout page 
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');

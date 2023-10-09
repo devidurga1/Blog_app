@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,7 @@
     
 <div class="container">
     <h1>User List <br/></h1>
-    <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Create New Role</a>
+    <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Create New User</a>
    {{-- <form>
         
         <label for="name">Name:</label>
@@ -32,23 +33,16 @@
     </form>--}}
    {{-- <table class="table table-bordered data-table">--}}
 
+    {{--this right form --}}
     <form id="search-form">
         <div class="row">
             <div class="col-md-4">
-                <input type="text" name="name" class="form-control" placeholder="Name">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Name">
             </div>
             <div class="col-md-4">
-                <input type="text" name="email" class="form-control" placeholder="Email">
+                <input type="text" name="email"  id="email"class="form-control" placeholder="Email">
             </div>
-            {{--<div class="col-md-4">
-                <label for="role">Role:</label>
-                                <select id="role" class="form-control">
-                                    <option value="">All</option>
-                                    @foreach($roles as $role)
-                                        <option value="{{ $role }}">{{ $role }}</option>
-                                    @endforeach
-                                </select>
-            </div>--}}
+            
 
             <div class="col-md-4">
                 <button type="button" id="search-button" class="btn btn-primary">Search</button>
@@ -56,19 +50,40 @@
         </div>
     </form>
 
+    {{--<form id="user-search-form">
+        <div class="form-row">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="email" placeholder="Email">
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="role">
+                    <option value="">Select Role</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>--}}
+
     <br>
         <table class="table table-bordered" id="users-table">
         <thead>
             <tr>
                 <th>No</th>
                 <th>Name</th>
-                <th>Email</th>
+                <th>Role</th>
                 <th>Created At</th>
                 <th >Action</th>
             </tr>
         </thead>
-        <tbody>
-        </tbody>
+    
     </table>
 </div>
    
@@ -92,7 +107,8 @@
   });
 </script>--}}
 
-<script type="text/javascript">
+{{--this  right code--}}
+ <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#users-table').DataTable({
             processing: true,
@@ -147,4 +163,110 @@ $(function() {
     });
 });
 </script>--}}
+{{--<script>
+    $(document).ready(function() {
+        // Set the CSRF token for all AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var table = $('#users-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{!! route('users.index') !!}',
+                data: function(d) {
+                    d.name = $('#name').val();
+                    d.email = $('#email').val();
+                    d.role = $('#role').val();
+                }
+            },
+            columns: [
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                { data: 'role.name', name: 'role.name' },
+                { data: 'created_at', name: 'created_at' },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false,
+                }
+            ]
+        });
+
+        $('#search-button').on('click', function(e) {
+            e.preventDefault();
+            table.draw();
+        });
+    });
+</script>--}}
+
+
+
+{{--<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#users-table').DataTable({
+            processing: true,
+            serverSide: true,
+            searching: false,
+            ajax: {
+                url: '{!! route("users.index") !!}',
+                data: function (d) {
+                    d.name = $('input[name=name]').val();
+                    d.email = $('input[name=email]').val();
+                
+                }
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+            
+                { data: 'created_at', name: 'created_at' },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
+            ]
+        });
+        $('#search-button').on('click', function(e) {
+        e.preventDefault();
+        table.draw();
+    });
+});
+</script>--}}
+{{--<script>
+    $(document).ready(function() {
+        var table = $('#users-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{!! route('users.index') !!}',
+                data: function(d) {
+                    d.name = $('#name').val();
+                    d.email = $('#email').val();
+                    d.role = $('#role').val();
+                }
+            },
+            columns: [
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                { data: 'role.name', name: 'role.name' },
+                { data: 'created_at', name: 'created_at' },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false,
+                }
+            ]
+        });
+
+        $('#user-search-form').on('submit', function(e) {
+            e.preventDefault();
+            table.draw();
+        });
+    });
+</script>--}}
+
+
 </html>

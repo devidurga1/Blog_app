@@ -6,6 +6,7 @@
 
         <title>Laravel</title>
 
+        <link  href="/css/main.css" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -28,15 +29,32 @@
                         <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                          
+                        <a href="{{ route('logout') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">
+                            Logout</a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
                         @endif
+
                     @endauth
                 </div>
             @endif
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="flex-center position-ref full-height">
+   
+        
+
+                <div class="content">
+                    <!--image path-->
+                    <img src="/images/b.jpg" alt="pizza house logo">
+                    <div class="title m-b-md">
+                        The North's Best Pizzas
+                    </div>
+                </div>
+            </div>
+
+          {{-- <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
                     <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
                         <g clip-path="url(#clip0)" fill="#EF3B2D">
@@ -126,7 +144,20 @@
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
+
+       {{--<div class="flex-center position-ref full-height">
+   
+        
+
+            <div class="content">
+                <!--image path-->
+                <img src="/images/b.jpg" alt="pizza house logo">
+                <div class="title m-b-md">
+                    The North's Best Pizzas
+                </div>
+            </div>
+        </div>--}}
     </body>
 </html>

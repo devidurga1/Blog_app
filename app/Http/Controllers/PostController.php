@@ -29,4 +29,24 @@ class PostController extends Controller
 
         return view('posts.index');
     }
+
+ 
+    public function show(Request $request)
+{
+    if ($request->ajax()) {
+        $data = Post::select('id', 'title', 'content', 'created_at')
+            ->with('user:name') // Assuming 'user' is the relationship between Post and User models
+            ->get();
+
+        return Datatables::of($data)
+            ->addColumn('author', function ($row) {
+                return $row->user->name ?? 'N/A';
+            })
+            ->make(true);
+    }
+
+    return view('posts.show');
+}
+
+
 }
