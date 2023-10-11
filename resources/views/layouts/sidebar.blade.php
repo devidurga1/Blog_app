@@ -16,7 +16,7 @@
 
 
     
-    <li>
+    {{--<li>
         <a href="{{ route('roles.index') }}">Role List</a>
     </li>
 
@@ -34,10 +34,30 @@
     
  <li>
   <a href="{{ route('logout') }}">Logout</a> 
-</li>
+</li>--}}
 
  
-    
+@can('role-list')
+<li>
+    <a href="{{ route('roles.index') }}">Role List</a>
+</li>
+@endcan
+
+@can('posts-list')
+<li>
+     <a href="{{ route('posts.index') }}">Posts List</a> 
+</li>
+@endcan
+
+@can('user-list')
+<li>
+     <a href="{{ route('users.index') }}">User List</a> 
+</li>
+@endcan
+
+<li>
+  <a href="{{ route('logout') }}">Logout</a> 
+</li>
 
     
 

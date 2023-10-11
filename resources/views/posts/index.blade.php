@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+@extends('layouts.aapp')
+@extends('layouts.sidebar')
+
+@section('content')
+
+
+{{--<!DOCTYPE html>
 <html>
 <head>
     <title>Blog_app</title>
@@ -12,10 +18,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 </head>
-<body>
+<body>--}}
     <div class="container">
     <h1>Posts List <br/></h1>
-    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-2">Create New Role</a>
+    <a href="{{ route('posts.create') }}" class="btn btn-primary mb-2">Create New Post</a>
 
 <!-- Search Bar -->
 <div class="mb-3">
@@ -29,7 +35,11 @@
             <th>ID</th>
             <th>Title</th>
             <th>Content</th>
+            <th>Image</th>
+           <th> comments_enabled</th>
             <th>Created At</th>
+            <th>Action</th>
+
         </tr>
     </thead>
 </table>
@@ -43,6 +53,7 @@
         var table = $('#posts-table').DataTable({
             processing: true,
             serverSide: true,
+            searching:false,
             ajax: {
                 url: '{!! route("posts.index") !!}',
                 data: function (d) {
@@ -53,7 +64,19 @@
                 { data: 'id', name: 'id' },
                 { data: 'title', name: 'title' },
                 { data: 'content', name: 'content' },
-                { data: 'created_at', name: 'created_at' }
+                
+                {
+        data: 'image',
+        name: 'image',
+        render: function(data, type, full, meta) {
+            // Assuming 'image' is the name of the image file in your public folder
+            return '<img src="' + '{{ asset("images") }}/' + data + '" alt="Post Image" width="100">';
+        }
+    },
+    { data: 'comments_enabled', name: 'comments_enableds' },
+
+     { data: 'created_at', name: 'created_at' },
+          { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });
         // Search functionality
@@ -62,4 +85,4 @@
     });
 });
 </script>
-</html>
+@endsection 

@@ -42,7 +42,7 @@ class UserController extends Controller
     }*/
 //this right code
 
-   public function index(Request $request)
+   /*public function index(Request $request)
     {
         if ($request->ajax()) {
             $users = User::orderBy('created_at', 'desc')->select(['id', 'name', 'email', 'created_at']);
@@ -60,7 +60,7 @@ class UserController extends Controller
         return view('users.index');
     }
 
-
+*/
 
 /*public function index(Request $request)
     {
@@ -192,6 +192,70 @@ class UserController extends Controller
 
 
 
+public function index(Request $request)
+
+{
+    $roles = Role::all();
+
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('roles') // Eager load the 'roles' relationship
+            ->orderBy('created_at', 'desc');
+
+        if ($request->input('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->input('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->input('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->input('role'));
+            });
+        }
+
+        return DataTables()->eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->implode('name', ', ');
+            })
+            ->addColumn('action', function (User $user) {
+                /*$editLink = route('users.edit', $user->id);
+                $showLink = route('users.show', $user->id);
+                
+                return '<a href="'.$editLink.'" class="btn btn-primary">Edit</a>'.
+                       '<a href="'.$showLink.'" class="btn btn-success">Show</a>';
+            })
+            ->rawColumns(['action'])*/
+            $editRoute = route('users.edit', $user->id);
+                    $showRoute = route('users.show', $user->id);
+                    $deleteRoute = route('users.destroy', $user->id);
+    
+                    return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
+                           '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                           '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>';
+                })
+                ->rawColumns(['action'])
+            
+            ->make(true);
+    }
+
+    //return view('users.index');
+    return view('users.index', compact('roles'));
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -208,7 +272,7 @@ public function create()
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
+            'password' => 'required',
             'roles' => 'required'
         ]);
     

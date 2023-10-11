@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
 
 class PostController extends Controller
 {
   
-    public function index(Request $request)
+    /*public function index(Request $request)
     {
         if ($request->ajax()) {
             $query = Post::select(['id', 'title', 'content', 'created_at'])
@@ -28,10 +32,54 @@ class PostController extends Controller
         }
 
         return view('posts.index');
+    }*/
+
+public function index(Request $request)
+{
+    if ($request->ajax()) {
+        $query = Post::query()
+            ->orderBy('created_at', 'desc');
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('content', 'like', "%$search%");
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('action', function (Post $post) {
+                
+                $editRoute = route('posts.edit', $post->id);
+                
+                $showRoute = route('posts.show', $post->id);
+    
+                $deleteRoute = route('posts.destroy', $post->id);
+            
+                return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
+                       '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                       '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
+    return view('posts.index');
+}
+
+
+
+
+public function show(Post $post)
+{
+    return view('posts.show', compact('post'));
+}
  
-    public function show(Request $request)
+    public function show1(Request $request)
 {
     if ($request->ajax()) {
         $data = Post::select('id', 'title', 'content', 'created_at')
@@ -49,4 +97,83 @@ class PostController extends Controller
 }
 
 
+// app/Http/Controllers/PostController.php
+/*public function store(Request $request)
+{
+    $data = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'comments_enabled' => 'boolean',
+    ]);
+
+    $data['comments_enabled'] = $request->has('comments_enabled');
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('public/images');
+        $data['image'] = basename($imagePath);
+    }
+
+    $post = Post::create($data);
+
+    return redirect()->route('posts.index', $post->id)->with('success', 'Post created successfully.');
+}
+*/
+
+
+    
+ public function create()
+{
+    return view('posts.create');
+}
+
+
+public function store(Request $request)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        //'comments_enabled'  => 'boolean',
+    ]);
+    $input = $request->all();
+    $input['comments_enabled'] = $request->has('comments_enabled');
+
+    if ($image = $request->file('image')) {
+        $destinationPath = 'images/';
+        $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+        $image->move($destinationPath, $profileImage);
+        $input['image'] = "$profileImage";
+    }
+    
+    $post = Post::create($input);
+
+    return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+
+}
+
+
+public function edit(Post $post)
+{
+return view('posts.edit',compact('post'));
+}
+
+public function update(Request $request, Post $post)
+{
+$request->validate([
+'title' => 'required',
+'content' => 'required',
+]);
+$post->update($request->all());
+return redirect()->route('posts.index')
+->with('success','Post updated successfully');
+}
+
+
+public function destroy(Post $post)
+{
+$post->delete();
+return redirect()->route('posts.index')
+->with('success','Post deleted successfully');
+}
 }

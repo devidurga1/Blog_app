@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 //use Session;
 //use SomeNamespace\Session;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,8 +38,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
 
         ]);
+        // Assign the "admin" role to the newly registered user
+    $adminRole = Role::where('name', 'admin')->first();
+    if ($adminRole) {
+        $user->assignRole($adminRole);
+    }
 
-        return redirect("login")->withSuccess('Great! You have Successfully loggedin');
+        return redirect('dashboard')->withSuccess('Great! You have Successfully loggedin');
+    
     }
 // this function only show view of login form 
     public function index()

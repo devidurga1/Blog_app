@@ -42,5 +42,16 @@ Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
 // this route for posts
 Route::resource('posts', PostController::class);
+
+
 // this route for logout page 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/form', function () {
+    return view('form');
+});
+
+
+Route::get('/form1', function () {
+    return view('form1');
+});

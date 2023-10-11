@@ -1,5 +1,5 @@
 @extends('layouts.ap')
-
+@extends('layouts.sidebar')
 @section('content')
 {{--<div class="container">
     <h2>Create User</h2>
@@ -50,17 +50,13 @@
             {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
         </div>
     </div>
-   {{-- <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
-            <strong>Confirm Password:</strong>
-            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
-        </div>--}}
-    </div>
+    
     <div class="col-xs-12 col-sm-12 col-md-12">
-        <div class="form-group">
+        
             <strong>Role:</strong>
-            {!! Form::select('roles[]', $roles,[], array('class' => 'form-control','multiple')) !!}
-        </div>
+            {{--!! Form::select('roles[]', $roles,[], array('class' => 'form-control')) !!}--}}
+            {!! Form::select('role', $roles, null, array('class' => 'form-control')) !!}
+        
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -70,4 +66,3 @@
 
 
 
-@endsection

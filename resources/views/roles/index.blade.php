@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+@extends('layouts.aapp')
+@extends('layouts.sidebar')
+
+@section('content')
+
+
+{{--<!DOCTYPE html>
 <html>
 <head>
     <title>Blog_app</title>
@@ -12,7 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 </head>
-<body>
+<body>--}}
     
 <div class="container">
     <h2>Role List</h2>
@@ -37,6 +43,7 @@ $(document).ready(function() {
     var table = $('#roles-table').DataTable({
         processing: true,
         serverSide: true,
+        searching:false,
         ajax: '{!! route("roles.index") !!}',
         columns: [
             { data: 'id', name: 'id' },
@@ -48,4 +55,5 @@ $(document).ready(function() {
     });
 });
 </script>
-</html>
+
+@endsection

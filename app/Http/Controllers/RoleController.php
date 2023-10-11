@@ -27,10 +27,22 @@ class RoleController extends Controller
 
             return DataTables::of($roles)
                 ->addColumn('action', function ($role) {
-                    $edit = route('roles.edit', $role->id);
-                    $delete = route('roles.destroy', $role->id);
-                    return '<a href="' . $edit . '" class="btn btn-primary">Edit</a>&nbsp;&nbsp;<a href="' . $delete . '" class="btn btn-danger delete">Show</a>';
+                    //$edit = route('roles.edit', $role->id);
+                    //$delete = route('roles.destroy', $role->id);
+                    //return '<a href="' . $edit . '" class="btn btn-primary">Edit</a>&nbsp;&nbsp;<a href="' . $delete . '" class="btn btn-danger delete">Show</a>';
+                    $editRoute = route('roles.edit', $role->id);
+                    $showRoute = route('roles.show', $role->id);
+                    $deleteRoute = route('roles.destroy', $role->id);
+    
+                    return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
+                           '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                           '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>';
                 })
+                ->rawColumns(['action'])
                 ->make(true);
         }
 

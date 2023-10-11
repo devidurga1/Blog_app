@@ -14,6 +14,7 @@ class Post extends Model
         'image',
        'auther_name',
        'user_id',
+       'comments_enabled',
 
 ];
 
