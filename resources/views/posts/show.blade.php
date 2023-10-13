@@ -1,5 +1,5 @@
 @extends('layouts.ap')
-<link  href="/css/main.css" rel="stylesheet">
+
 @extends('layouts.sidebar')
 @section('content')
 
@@ -99,12 +99,53 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Image:</strong>
-            {{ $post->image }}
+
             <img src="/images/{{ $post->image }}" width="300px">
         </div>
     </div>
     
 </div>
+
+
+{{--<div class="comments">
+    <h2>Comments</h2>
+    @foreach($post->comments as $comment)
+        <div class="comment">
+            <p>{{ $comment->content }}</p>
+            <p>Commented on {{ $comment->created_at }} by {{ $comment->user->name }}</p>
+            <button class="show-replies">Show Replies</button>
+            <div class="replies">
+                @foreach($comment->replies as $reply)
+                    <div class="reply">
+                        <p>{{ $reply->content }}</p>
+                        <p>Replied on {{ $reply->created_at }} by {{ $reply->user->name }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endforeach
+</div>--}}
+
+{{--@foreach($post->comments as $comment)
+    <div class="comment">
+        <p>{{ $comment->content }}</p>
+        <p>Commented on {{ $comment->created_at }} by {{ $comment->user->name }}</p>
+    </div>
+@endforeach--}}
+
+{{--@foreach($post->comments as $comment)
+    <div class="comment">
+        <p>{{ $comment->content }}</p>
+        <p>Commented on {{ $comment->created_at }} by {{ optional($comment->user)->name }}</p>
+    </div>
+@endforeach--}}
+
+
+<h4>Display Comments</h4>
+  
+@include('posts.commentsDisplay', ['comments' => $post->comments, 'post_id' => $post->id])
+   
+<hr />
 
 @endsection
 

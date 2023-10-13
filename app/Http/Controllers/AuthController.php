@@ -44,7 +44,17 @@ class AuthController extends Controller
         $user->assignRole($adminRole);
     }
 
-        return redirect('dashboard')->withSuccess('Great! You have Successfully loggedin');
+    $request->validate([
+        'email' => 'required',
+        'password' => 'required',
+    ]);
+
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        return redirect()->intended('dashboard')
+                    ->withSuccess('You have Successfully loggedin');
+    }
+        //return redirect('dashboard')->withSuccess('Great! You have Successfully loggedin');
     
     }
 // this function only show view of login form 
@@ -84,7 +94,7 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
   
-        return Redirect('login');
+        return Redirect('register');
     }
 
 }

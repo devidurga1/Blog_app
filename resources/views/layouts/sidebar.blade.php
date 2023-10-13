@@ -14,50 +14,32 @@
 <ul class="sidebar-menu">
     <!-- Common menu items -->
 
+  
 
-    
-    {{--<li>
-        <a href="{{ route('roles.index') }}">Role List</a>
-    </li>
-
-
-    
+    @can('role-list')
     <li>
-         <a href="{{ route('posts.index') }}">Posts List</a> 
+        <a href="{{ route('roles.index') }}">Role </a>
     </li>
+    @endcan
 
-    
-    
+  
+    @can('post-list')
     <li>
-         <a href="{{ route('users.index') }}">User List</a> 
+         <a href="{{ route('posts.index') }}">Post </a> 
     </li>
+    @endcan
     
- <li>
-  <a href="{{ route('logout') }}">Logout</a> 
-</li>--}}
+    @can('user-list')
+    <li>
+         <a href="{{ route('users.index') }}">User </a> 
+    </li>
+    @endcan
 
- 
-@can('role-list')
-<li>
-    <a href="{{ route('roles.index') }}">Role List</a>
-</li>
-@endcan
+    <li>
+      <a href="{{ route('logout') }}">logout </a> 
+ </li>
 
-@can('posts-list')
-<li>
-     <a href="{{ route('posts.index') }}">Posts List</a> 
-</li>
-@endcan
 
-@can('user-list')
-<li>
-     <a href="{{ route('users.index') }}">User List</a> 
-</li>
-@endcan
-
-<li>
-  <a href="{{ route('logout') }}">Logout</a> 
-</li>
 
     
 

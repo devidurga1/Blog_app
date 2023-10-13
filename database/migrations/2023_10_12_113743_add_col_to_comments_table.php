@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAutherNameToPostsTable extends Migration
+class AddColToCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddAutherNameToPostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->string('author_name')->nullable()->default('Anonymous');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->integer('parent_id')->unsigned()->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddAutherNameToPostsTable extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn(['author_name']);
+        Schema::table('comments', function (Blueprint $table) {
+            //
         });
     }
 }

@@ -12,6 +12,14 @@ use Spatie\Permission\Traits\HasPermissions;
 
 class PostController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:post-list|post-create|post-edit|user-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:post-create', ['only' => ['create','store']]);
+        $this->middleware('permission:post-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:post-delete', ['only' => ['destroy']]);
+    }
   
     /*public function index(Request $request)
     {
@@ -135,19 +143,22 @@ public function store(Request $request)
         'content' => 'required|string',
         'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         //'comments_enabled'  => 'boolean',
+        'user_id'=>'integer',
     ]);
     $input = $request->all();
     $input['comments_enabled'] = $request->has('comments_enabled');
+    $input['user_id'] = auth()->user()->id;
 
+    
     if ($image = $request->file('image')) {
         $destinationPath = 'images/';
         $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
         $image->move($destinationPath, $profileImage);
         $input['image'] = "$profileImage";
     }
-    
+    //dd($input);
     $post = Post::create($input);
-
+        //dd($input);
     return redirect()->route('posts.index')->with('success', 'Post created successfully.');
 
 }
@@ -176,4 +187,7 @@ $post->delete();
 return redirect()->route('posts.index')
 ->with('success','Post deleted successfully');
 }
+
+
+
 }
