@@ -103,6 +103,67 @@
         @include('posts.commentsDisplay', ['comments' => $comments, 'post_id' => $post->id])
     </div>
 </div>
+
+
+
+
+
+    {{--<div class="add-comment">
+        <button class="add-comment-button">Add Comment</button>
+        <form class="comment-form" style="display: none;" action="{{ route('comments.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="post_id" value="{{ $post->id }}">
+            <textarea name="body" rows="3" placeholder="Leave a comment" required></textarea>
+            <button type="submit">Submit Comment</button>
+        </form>
+    </div>--}}
+
+
+
+{{--<form method="POST" action="{{ route('comments.store') }}">
+    @csrf
+
+    <input type="hidden" name="post_id" value="{{ $post->id }}">
+    
+    <div class="form-group">
+        <label for="message">Your Comment</label>
+        <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+</form>--}}
+
+
+
+{{--this right code --}}
+{{--@auth
+    <button id="show-comment-form">Add Comment</button>
+    <form id="comment-form" style="display: none;" action="{{ route('comments.store') }}" method="POST">
+        @csrf
+        <input type="hidden" name="post_id" value="{{ $post->id }}">
+        <textarea name="message" rows="4" placeholder="Your comment" required></textarea>
+        <button type="submit">Submit Comment</button>
+    </form>
+@endauth--}}
+
+
+<!-- JavaScript for toggling replies and comment form -->
+<script>
+    $(document).ready(function () {
+        $('.show-replies').click(function () {
+            $(this).siblings('.replies').slideToggle();
+        });
+        $('.add-comment-button').click(function () {
+            $(this).next('.comment-form').slideToggle();
+        });
+        $(document).ready(function() {
+    $('#show-comment-form').click(function() {
+        $('#comment-form').slideToggle();
+    });
+});
+    });
+</script>
+
 @endsection
 
 

@@ -65,12 +65,12 @@
     
         <!-- Comments section -->
         <div class="comments">
-            <h2>Comments</h2>
+            {{--<h2>Comments</h2>--}}
             @foreach($post->comments as $comment)
                 <div class="comment">
                     <p>{{ $comment->message }}</p>
                     <p>Commented on {{ $comment->created_at }} by {{ $comment->user->name }}</p>
-                   {{-- <button class="show-replies">Show Replies</button>--}}
+                    {{--<button class="show-replies">Show Replies</button>--}}
                     <div class="replies">
                         @foreach($comment->replies as $reply)
                             <div class="reply">
@@ -88,7 +88,7 @@
         <!-- Other content on your page -->
 
     
-    @push('scripts')
+    
     <script>
         $(document).ready(function() {
             // Hide all reply sections initially
@@ -100,8 +100,15 @@
                 replies.toggle();
             });
         });
+
+        $(document).ready(function() {
+    $('.show-replies').click(function() {
+        $(this).next('.replies').slideToggle();
+    });
+});
+
     </script>
-    @endpush
+    
     
 
 

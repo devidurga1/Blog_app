@@ -6,7 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\GoogleController;
 //use DB;
 use Illuminate\Support\Facades\DB;
@@ -61,9 +63,18 @@ Route::get('/form1', function () {
 Route::get('register1', [RoleUserController::class, 'registerView'])->name('register1');
 Route::post('register1', [RoleUserController::class, 'register'])->name('register1');
 
+Route::post('/comments', [CommentController::class,'store'])->name('comments.store');
+
+
 
 Route::get('userdashboard', [RoleUserController::class, 'dashboard']);
 
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+
+
+Route::get('forgot-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
