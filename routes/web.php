@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleUserController;
+use App\Http\Controllers\GoogleController;
 //use DB;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -57,8 +58,8 @@ Route::get('/form1', function () {
     return view('form1');
 });
 
-Route::get('register', [RoleUserController::class, 'registerView'])->name('register');
-Route::post('register', [RoleUserController::class, 'register'])->name('register');
+Route::get('register1', [RoleUserController::class, 'registerView'])->name('register1');
+Route::post('register1', [RoleUserController::class, 'register'])->name('register1');
 
 
 Route::get('userdashboard', [RoleUserController::class, 'dashboard']);

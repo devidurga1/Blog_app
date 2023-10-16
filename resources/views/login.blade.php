@@ -46,6 +46,7 @@
     {{--<input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">--}}
     <label  for="exampleCheck1">Not a member?  <a href="register">Sign Up Now</a>.</label>
     </div>
+    
     </div>
     </div>
     

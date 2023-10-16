@@ -7,13 +7,19 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\WelcomeMailNotification;
+
+use App\Providers\RouteServiceProvider;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Http\Request;
 
 class RoleUserController extends Controller
 {
     public function registerView()
     {
-        return view('RoleUser.register');
+        return view('RoleUser.register1');
 
     }
 
@@ -33,8 +39,17 @@ class RoleUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
 
+    
+
         ]);
+
+       
+        Mail::to($user->email)->send(new WelcomeEmail($user));
+    
+
         // Assign the "admin" role to the newly registered user
+    
+
     $adminRole = Role::where('name', 'user')->first();
     if ($adminRole) {
         $user->assignRole($adminRole);
@@ -44,6 +59,8 @@ class RoleUserController extends Controller
         'email' => 'required',
         'password' => 'required',
     ]);
+    
+
 
     $credentials = $request->only('email', 'password');
     if (Auth::attempt($credentials)) {

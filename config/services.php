@@ -30,17 +30,29 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'google' => [
+    /*'google' => [
         'client_id' => 'your client id',
         'client_secret' => 'your client secret key',
-        'redirect' => 'http://localhost:8000/authorized/google/callback',
+        'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
 ],
-
+*/
 
 'google' => [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
     'redirect' => env('GOOGLE_REDIRECT'),
+],
+
+/*'google' => [
+    'client_id' => env('328258278442-77jv3cq4jbje1p25lvfk88drl6gjq56j.apps.googleusercontent.com'),
+    'client_secret' => env('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'),
+    'redirect' => env('http://127.0.0.1:8000/auth/google/callback'),
+],
+*/
+'google' => [
+    'client_id' => '328258278442-77jv3cq4jbje1p25lvfk88drl6gjq56j.apps.googleusercontent.com',
+    'client_secret' => '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',
+    'redirect' => 'http://127.0.0.1:8000/auth/google/callback',
 ],
 
 ];

@@ -46,12 +46,21 @@
         <p class="text-danger">{{ $errors->first('password') }}</p>
         @endif
     </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Google</label>
+        <a href="{{ url('auth/google') }}">
+            <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em;">
+        </a>
+        
+        </div>
     <div class="form-group mb-0">
         
     <div class="custom-control custom-checkbox">
     {{--<input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">--}}
     <label  for="exampleCheck1">Not a member?  <a href="register">Sign Up Now</a>.</label>
     </div>
+    
     </div>
     </div>
     

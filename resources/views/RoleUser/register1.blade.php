@@ -22,7 +22,7 @@
                                         {{ session('success') }}
                                     </div>
                                 @endif
-                                <form action="{{ route('register') }}" method="post">
+                                <form action="{{ route('register1') }}" method="post">
                                     @csrf
                                     @method('post')
                                     <h3 class="card-title">Register Form<small></small></h3>
