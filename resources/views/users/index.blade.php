@@ -24,7 +24,9 @@
             <button type="button" id="search-button">Search</button>
         </form>
 
-        <table class="table table-bordered" id="users-table">
+
+
+    {{-- this right code   <table class="table table-bordered" id="users-table">
             <thead>
                 <tr>
                     <th>No</th>
@@ -88,5 +90,90 @@
                 table.ajax.reload();
             });
         });
+    </script>--}}
+    <table class="table table-bordered" id="users-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+    
+    <script>
+        $(document).ready(function() {
+            var table = $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                ajax: {
+                    url: '{{ route('users.index') }}',
+                    data: function(d) {
+                        d.name = $('input[name=name]').val();
+                        d.email = $('input[name=email]').val();
+                        d.role = $('select[name=role]').val();
+                    }
+                },
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'roles',
+                        name: 'roles.name'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+    
+            // Add click event for delete button
+            $('#users-table').on('click', '.delete-button', function() {
+                var userId = $(this).data('id');
+                if (confirm('Are you sure you want to delete this user?')) {
+                    // Perform the delete action when the user confirms
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route('users.destroy', ['user' => ':id']) }}'.replace(':id', userId),
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "_method": "DELETE"
+                        },
+                        success: function(data) {
+                            // Reload the DataTable on success or perform any other action
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            });
+    
+            $('#search-button').on('click', function(e) {
+                e.preventDefault();
+                table.ajax.reload();
+            });
+        });
     </script>
+    
+
+
 @endsection

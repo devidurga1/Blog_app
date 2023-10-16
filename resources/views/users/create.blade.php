@@ -54,8 +54,9 @@
     <div class="col-xs-12 col-sm-12 col-md-12">
         
             <strong>Role:</strong>
-            {{--!! Form::select('roles[]', $roles,[], array('class' => 'form-control')) !!}--}}
-            {!! Form::select('role', $roles, null, array('class' => 'form-control')) !!}
+           {!! Form::select('roles[]', $roles,[], array('class' => 'form-control')) !!}
+        
+
         
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

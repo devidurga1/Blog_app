@@ -35,10 +35,16 @@
     <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
     <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
+    @if ($errors->has('email'))
+ <p class="text-danger">{{ $errors->first('email') }}</p>
+        @endif
     </div>
     <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+    @if ($errors->has('password'))
+        <p class="text-danger">{{ $errors->first('password') }}</p>
+        @endif
     </div>
     <div class="form-group mb-0">
         

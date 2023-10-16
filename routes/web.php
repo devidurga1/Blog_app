@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RoleUserController;
 //use DB;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -56,4 +57,12 @@ Route::get('/form1', function () {
     return view('form1');
 });
 
+Route::get('register', [RoleUserController::class, 'registerView'])->name('register');
+Route::post('register', [RoleUserController::class, 'register'])->name('register');
 
+
+Route::get('userdashboard', [RoleUserController::class, 'dashboard']);
+
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);

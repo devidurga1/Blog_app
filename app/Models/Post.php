@@ -34,7 +34,7 @@ class Post extends Model
 
     {
 
-        return $this->hasMany(Comment::class)->whereNull('parent_id');
+        return $this->hasMany(Comment::class);
 
     }
 }

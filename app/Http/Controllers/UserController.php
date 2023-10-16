@@ -197,9 +197,9 @@ class UserController extends Controller
 
 
 
+// this is correct code 
 
-
-public function index(Request $request)
+/*public function index(Request $request)
 
 {
     $roles = Role::all();
@@ -228,13 +228,7 @@ public function index(Request $request)
                 return $user->roles->implode('name', ', ');
             })
             ->addColumn('action', function (User $user) {
-                /*$editLink = route('users.edit', $user->id);
-                $showLink = route('users.show', $user->id);
                 
-                return '<a href="'.$editLink.'" class="btn btn-primary">Edit</a>'.
-                       '<a href="'.$showLink.'" class="btn btn-success">Show</a>';
-            })
-            ->rawColumns(['action'])*/
             $editRoute = route('users.edit', $user->id);
                     $showRoute = route('users.show', $user->id);
                     $deleteRoute = route('users.destroy', $user->id);
@@ -254,12 +248,116 @@ public function index(Request $request)
 
     //return view('users.index');
     return view('users.index', compact('roles'));
+}*/
+
+/*public function index(Request $request)
+{
+    $roles = Role::all();
+
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('roles') // Eager load the 'roles' relationship
+            ->orderBy('created_at', 'desc');
+
+        if ($request->input('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->input('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->input('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->input('role'));
+            });
+        }
+
+        return DataTables()->eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->implode('name', ', ');
+            })
+            ->addColumn('action', function (User $user) {
+                $deleteRoute = route('users.destroy', $user->id);
+                $confirmationMessage = "Are you sure you want to delete this user?";
+                $deleteScript = <<<SCRIPT
+                    <form method="POST" action="{$deleteRoute}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="button" class="btn btn-danger delete-button">Delete</button>
+                    </form>
+                    <script>
+                        document.querySelector('.delete-button').addEventListener('click', function() {
+                            if (confirm('{$confirmationMessage}')) {
+                                this.parentNode.submit();
+                            }
+                        });
+                    </script>
+                SCRIPT;
+                return $deleteScript;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    return view('users.index', compact('roles'));
 }
+*/
 
 
 
+public function index(Request $request)
+{
+    $roles = Role::all();
 
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('roles')
+            ->orderBy('created_at', 'desc');
 
+        if ($request->input('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->input('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->input('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->input('role'));
+            });
+        }
+
+        return DataTables()->eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->implode('name', ', ');
+            })
+            ->addColumn('action', function (User $user) {
+                $editRoute = route('users.edit', $user->id);
+                $showRoute = route('users.show', $user->id);
+                $deleteRoute = route('users.destroy', $user->id);
+
+                return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
+                    '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                    '<button data-id="' . $user->id . '" class="btn btn-danger delete-button">Delete</button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    if ($request->isMethod('delete')) {
+        $userId = $request->input('user_id');
+        dd($userId);
+        // Perform the actual deletion of the user here, for example:
+        User::destroy($userId);
+        
+        // Return a response indicating success
+        return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    return view('users.index', compact('roles'));
+}
 
 
 
@@ -300,7 +398,7 @@ public function create()
     }
 
 
-    public function edit($id)
+    /*public function edit($id)
     {
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
@@ -308,7 +406,17 @@ public function create()
     
         return view('users.edit',compact('user','roles','userRole'));
     }
-    
+    */
+
+
+    public function edit($id)
+{
+    $user = User::find($id); // Fetch the user from the database
+    $roles = Role::all(); // You should fetch the available roles
+
+    return view('users.edit', compact('user', 'roles'));
+}
+
     /**
      * Update the specified resource in storage.
      *
@@ -316,7 +424,7 @@ public function create()
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+   /* public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -340,7 +448,65 @@ public function create()
     
         return redirect()->route('users.index')
                         ->with('success','User updated successfully');
+    }*/
+
+   /* public function update(Request $request, User $user)
+    {
+        //dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            //'is_admin'=>'required|boolean',
+
+            // 'password' => 'required|string|min:6',
+            'roles' => 'required|array'
+        ]);
+
+        $input = $request->all();
+
+        if ($image = $request->file('image')) {
+            $destinationPath = 'images/';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        } else {
+            unset($input['image']);
+        }
+        $user->update($input);
+        $user->roles()->sync($request->input('roles'));
+        return redirect()->route('users.index')->with('success', 'User update successfully');
+    }*/
+
+    public function update(Request $request, User $user)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        //'is_admin'=>'required|boolean',
+
+        // 'password' => 'required|string|min:6',
+        'role' => 'required|exists:roles,id', // Validate the single role ID
+    ]);
+
+    $input = $request->all();
+
+    if ($image = $request->file('image')) {
+        $destinationPath = 'images/';
+        $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+        $image->move($destinationPath, $profileImage);
+        $input['image'] = "$profileImage";
+    } else {
+        unset($input['image']);
     }
+
+    $user->update($input);
+
+    // Sync the roles with the selected role only, instead of all roles
+    $user->roles()->sync([$request->input('role')]);
+
+    return redirect()->route('users.index')->with('success', 'User updated successfully');
+}
+
     
     /**
      * Remove the specified resource from storage.

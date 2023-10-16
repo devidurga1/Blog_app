@@ -51,13 +51,26 @@
             {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
         </div>
     </div>--}}
-    <div class="col-xs-12 col-sm-12 col-md-12">
+   {{-- <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             <strong>Role:</strong>
            {{-- {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control','multiple')) !!}--}}
-            {!! Form::select('role', $roles, $userRole, array('class' => 'form-control')) !!}
+            {{--{!! Form::select('role', $roles, $userRole, ('class' => 'form-control')) !!}--}}
+          {{--  {!! Form::select('role', $roles, $userRole, ['class' => 'form-control']) !!}--}}
             
-        </div>
+        {{--</div>
+    </div>--}}
+
+
+    <div class="form-group">
+        <label for="role">Role</label>
+        <select name="role" id="role" class="form-control" required>
+            @foreach ($roles as $role)
+                <option value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                    {{ $role->name }}
+                </option>
+            @endforeach
+        </select>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
