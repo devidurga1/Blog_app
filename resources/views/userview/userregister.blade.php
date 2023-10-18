@@ -22,7 +22,7 @@
                                         {{ session('success') }}
                                     </div>
                                 @endif
-                                <form action="{{ route('login') }}" method="post">
+                                <form action="{{ route('userregister') }}" method="post">
                                     @csrf
                                     @method('post')
                                     <h3 class="card-title">Register Form<small></small></h3>
@@ -32,31 +32,29 @@
 
 
                                 <div class="form-group">
-                                    <label >Name</label>
+                                    <label>Name</label>
                                     <input type="text" name="name" class="form-control" placeholder="Enter Name">
                                     @if ($errors->has('name'))
                                         <p class="text-danger">{{ $errors->first('name') }}</p>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label >Email address</label>
-                                    <input type="email" name="email" class="form-control" 
-                                        placeholder="Enter email">
+                                    <label>Email address</label>
+                                    <input type="email" name="email" class="form-control" placeholder="Enter email">
                                     @if ($errors->has('email'))
                                         <p class="text-danger">{{ $errors->first('email') }}</p>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label >Password</label>
-                                    <input type="password" name="password" class="form-control" 
-                                        placeholder="Password">
+                                    <label>Password</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password">
                                     @if ($errors->has('password'))
                                         <p class="text-danger">{{ $errors->first('password') }}</p>
                                     @endif
                                 </div>
 
                                 <div class="form-group">
-                                    <label >Password</label>
+                                    <label>Password</label>
                                     <input type="password" name="password_confirmation" class="form-control"
                                         placeholder="Comfirm Your Password">
                                     @if ($errors->has('password_confirmation'))
@@ -67,7 +65,7 @@
 
                                     <div class="custom-control custom-checkbox">
                                         {{-- <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1"> --}}
-                                        <label for="exampleCheck1">Already have an account? <a href="login">Sign
+                                        <label for="exampleCheck1">Already have an account? <a href="userlogin">Sign
                                                 in</a>.</label>
                                     </div>
                                 </div>

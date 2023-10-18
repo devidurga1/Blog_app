@@ -15,6 +15,9 @@
     <!-- Common menu items -->
 
   
+ @if (Auth::check())
+    <p>Welcome, {{ Auth::user()->name }}</p>
+@endif
 
     @can('role-list')
     <li>

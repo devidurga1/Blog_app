@@ -44,13 +44,13 @@
         <span class="text-danger">{{ $message }}</span>
         @enderror
     </div>
-    {{--<div class="form-group">
-        <label for="name">Password</label>
-        <input type="password" name="password" class="form-control" value="{{$user->password}}" />
+    <div class="form-group">
+        <label class="form-check-label" for="comments_enabled">Enable Comments</label>
+        <input type="checkbox" name="comments_enabled" id="comments_enabled" class="form-check-input" @if ($post->comments_enabled) checked @endif>
         @error('password')
         <span class="text-danger">{{ $message }}</span>
         @enderror
-    </div>--}}
+    </div>
 
     <div class="form-group">
         <label for="image">Image</label>

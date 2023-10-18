@@ -9,7 +9,6 @@
             <h2>Create New post</h2>
         </div>
         <div class="pull-right">
-    
         </div>
     </div>
 </div>
@@ -60,10 +59,7 @@
     <div class="form-check">
         <input type="checkbox" name="comments_enabled" id="comments_enabled" class="form-check-input" checked>
         <label class="form-check-label" for="comments_enabled">Enable Comments</label>
-    </div>
-   
-
-    
+    </div> 
     <button type="submit" class="btn btn-primary">Create Post</button>
 </form>
 

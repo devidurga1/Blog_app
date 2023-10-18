@@ -60,12 +60,15 @@ Route::get('/form1', function () {
     return view('form1');
 });
 
-Route::get('register1', [RoleUserController::class, 'registerView'])->name('register1');
-Route::post('register1', [RoleUserController::class, 'register'])->name('register1');
+Route::get('userregister', [RoleUserController::class, 'RegisterView'])->name('userregister');
+Route::post('userregister', [RoleUserController::class, 'Register'])->name('userregister');
+Route::get('userlogin', [RoleUserController::class, 'index'])->name('userlogin');
+Route::post('userlogin', [RoleUserController::class, 'Login'])->name('userlogin');
 
 Route::post('/comments', [CommentController::class,'store'])->name('comments.store');
 
-
+Route::get('/viewall', [RoleUserController::class,'viewall'])->name('viewall');
+Route::get('/viewdetail/{id}', [RoleUserController::class,'show'])->name('userview.viewdetail');
 
 Route::get('userdashboard', [RoleUserController::class, 'dashboard']);
 
@@ -78,3 +81,8 @@ Route::get('forgot-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+Route::get('/welcomeuser', function () {
+    return view('welcomeuser');
+});

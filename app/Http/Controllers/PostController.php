@@ -232,6 +232,7 @@ public function update(Request $request, POST $post)
         } else {
             unset($input['image']);
         }
+        $post->comments_enabled = $request->has('comments_enabled');
         $post->update($input);
         
         return redirect()->route('posts.index')->with('success', 'User update successfully');
