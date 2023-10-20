@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
@@ -152,17 +153,20 @@ public function index(Request $request)
                 $deleteRoute = route('posts.destroy', $post->id);
                 
                 $editButton = '';
-                if (auth()->user()->can('post-edit')) {
-                    $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                $deleteButton = '';
+
+                if (Auth::check()) {
+                    if (auth()->user()->can('user-edit')) {
+                        $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                    }
+                    if (auth()->user()->can('user-delete')) {
+                        $deleteButton = '<button data-id="' . $post->id . '" class="btn btn-danger delete-button">Delete</button>';
+                    }
                 }
 
-                return $editButton .
+                return $editButton . 
                        '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
-                       '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
-                            ' . csrf_field() . '
-                            ' . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>';
+                       $deleteButton;
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -171,6 +175,49 @@ public function index(Request $request)
     return view('posts.index');
 }
 
+
+
+/*public function index(Request $request)
+{
+    if ($request->ajax()) {
+        $query = Post::query()
+            ->orderBy('created_at', 'desc');
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('content', 'like', "%$search%");
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('action', function (Post $post) {
+                $editRoute = route('posts.edit', $post->id);
+                $showRoute = route('posts.show', $post->id);
+                $deleteRoute = route('posts.destroy', $post->id);
+                
+                $editButton = '';
+                $deleteButton = '';
+
+                        
+                        $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                        
+                    if (auth()->user()->can('user-delete')) {
+                        $deleteButton = '<button data-id="' . $post->id . '" class="btn btn-danger delete-button">Delete</button>';
+                    }
+                }
+
+                return $editButton . 
+                       '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
+                       $deleteButton;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    return view('posts.index');
+}
+*/
 
 
 
@@ -279,6 +326,8 @@ public function store(Request $request)
     return redirect()->route('posts.index')->with('success', 'Post created successfully.');
 
 }
+
+
 
 
 public function edit(Post $post)

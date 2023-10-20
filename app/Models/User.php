@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\Access\Authorizable;    
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -19,6 +20,7 @@ class User extends Authenticatable
 {
     //use HasApiTokens, HasFactory, Notifiable ,HasRoles, TwoFactorAuthenticatable ,CanResetPassword;
     use HasApiTokens;
+    use Authorizable;      
     use HasFactory;
     use Notifiable ;
      use HasRoles;

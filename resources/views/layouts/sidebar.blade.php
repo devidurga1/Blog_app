@@ -66,6 +66,10 @@
     </li>
 @endauth
 
+@if (auth()->check())
+    <p>Welcome, {{ auth()->user()->name }}</p>
+@endif
+
     @can('role-list')
     <li>
         <a href="{{ route('roles.index') }}">Role </a>

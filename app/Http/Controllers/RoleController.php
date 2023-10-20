@@ -5,6 +5,7 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 //use DB;
 
@@ -188,33 +189,38 @@ public function index(Request $request)
                 $editRoute = route('roles.edit', $role->id);
                 $showRoute = route('roles.show', $role->id);
                 $deleteRoute = route('roles.destroy', $role->id);
-
-                // Check if the user has the 'role-edit' permission
-                if (auth()->user()->can('role-edit')) {
-                    $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
-                } else {
-                    $editButton = ''; // No permission, don't display the 'Edit' button
-                }
-
-                // Always show the "Show" button
-                $showButton = '<a href="' . $showRoute . '" class="btn btn-success">View</a>';
-
-                // Check if the user has the 'role-delete' permission
-                $deleteButton = '';
-                if (auth()->user()->can('role-delete')) {
-                    $deleteButton = '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
-                                    ' . csrf_field() . '
-                                    ' . method_field('DELETE') . '
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>';
-                }
-
-                // Combine the buttons
-                return $editButton . $showButton . $deleteButton;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
+               
+    
+                    $editButton = '';
+                    $deleteButton = '';
+    
+                    if (Auth::check()) {
+                        if (auth()->user()->can('user-edit')) {
+                            $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                        }
+                        if (auth()->user()->can('user-delete')) {
+                            $deleteButton = '<button data-id="' . $role->id . '" class="btn btn-danger delete-button">Delete</button>';
+                        }
+                    }
+    
+                    return $editButton . 
+                           '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
+                           $deleteButton;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    
+        if ($request->isMethod('delete')) {
+            if (auth()->user()->can('role-delete')) {
+                $roleId = $request->input('role_id');
+                // Perform the actual deletion of the user here, for example:
+                Role::destroy($roleId);
+                // Return a response indicating success
+                return response()->json(['message' => 'User deleted successfully']);
+            }
+        }
+                
 
     return view('roles.index');
 }
