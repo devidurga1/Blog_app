@@ -21,7 +21,9 @@
     <div class="container">
     <h1  class="d-flex justify-content-center">Posts List <br/></h1>
     <div class="d-flex justify-content-center">
+        @can('post-create')
     <a href="{{ route('posts.create') }}" class="btn btn-primary mb-2">Create New Post</a>
+        @endcan
     </div>
 <!-- Search Bar -->
 <div class="d-flex justify-content-center">

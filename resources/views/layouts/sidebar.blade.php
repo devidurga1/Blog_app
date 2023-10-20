@@ -57,14 +57,14 @@
   </style>
   </head>
   <body>
-  
-  <div class="sidenav">
     
-  @auth
-<p>Welcome, {{ auth()->user()->name }}</p>
+  <div class="sidenav">
+
+    @auth
+    <li>
+        <span>Welcome,{{ Auth::user()->name}} </span>
+    </li>
 @endauth
-
-
 
     @can('role-list')
     <li>
@@ -93,8 +93,10 @@
   </div>
   
   <div class="main">
-    
-    
+    {{--@auth
+    <p>Hi, {{ auth()->user()->name }}</p>
+    @endauth--}}
+    <p>Hi: {{ Auth::user()->name}}</P>
   </div>
      
   </body>

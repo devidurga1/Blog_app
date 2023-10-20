@@ -43,7 +43,7 @@ class PostController extends Controller
         return view('posts.index');
     }*/
 
-public function index(Request $request)
+ /*this code is right public function index(Request $request)
 {
     if ($request->ajax()) {
         $query = Post::query()
@@ -66,6 +66,97 @@ public function index(Request $request)
                 $deleteRoute = route('posts.destroy', $post->id);
             
                 return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
+                       '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
+                       '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
+                            ' . csrf_field() . '
+                            ' . method_field('DELETE') . '
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    return view('posts.index');
+}
+*/
+
+/*public function index(Request $request)
+{
+    if ($request->ajax()) {
+        $query = Post::query()
+            ->orderBy('created_at', 'desc');
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('content', 'like', "%$search%");
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('action', function (Post $post) {
+                $editRoute = route('posts.edit', $post->id);
+                $showRoute = route('posts.show', $post->id);
+                $deleteRoute = route('posts.destroy', $post->id);
+                
+                // Check if the user has the 'post-edit' permission
+                $canEdit = auth()->user()->can('post-edit');
+                
+                // Check if the user has the 'post-delete' permission
+                $canDelete = auth()->user()->can('post-delete');
+
+                // Only generate the 'Edit' button if the user has permission
+                $editButton = $canEdit
+                    ? '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>'
+                    : '';
+
+                // Only generate the 'Delete' button if the user has permission
+                $deleteButton = $canDelete
+                    ? '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
+                         ' . csrf_field() . '
+                         ' . method_field('DELETE') . '
+                         <button type="submit" class="btn btn-danger">Delete</button>
+                       </form>'
+                    : '';
+
+                // Combine the buttons
+                return $editButton . $deleteButton . '<a href="' . $showRoute . '" class="btn btn-success">View</a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    return view('posts.index');
+}
+*/
+
+
+public function index(Request $request)
+{
+    if ($request->ajax()) {
+        $query = Post::query()
+            ->orderBy('created_at', 'desc');
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('content', 'like', "%$search%");
+            });
+        }
+
+        return DataTables::of($query)
+            ->addColumn('action', function (Post $post) {
+                $editRoute = route('posts.edit', $post->id);
+                $showRoute = route('posts.show', $post->id);
+                $deleteRoute = route('posts.destroy', $post->id);
+                
+                $editButton = '';
+                if (auth()->user()->can('post-edit')) {
+                    $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                }
+
+                return $editButton .
                        '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
                        '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
                             ' . csrf_field() . '

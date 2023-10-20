@@ -22,7 +22,9 @@
 <div class="container">
     <h2 class="d-flex justify-content-center">Role List</h2>
 <div class="d-flex justify-content-center">
+    @can('role-create')
     <a href="{{ route('roles.create') }}" class="btn btn-primary mb-2">Create New Role</a>
+    @endcan
 </div>
     <div class="d-flex justify-content-center">
     <table class="table table-bordered" id="roles-table">

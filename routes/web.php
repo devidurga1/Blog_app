@@ -104,3 +104,6 @@ Route::group(['middleware'=>['IsAdmin',':admin']],function(){
 //Route::post('/reply/store', [CommentController::class,'replyStore'])->name('reply.add');
 
 Route::post('/reply', [CommentController::class,'Reply'])->name('reply.add');
+Route::middleware(['auth'])->group(function () {
+    // Your routes here
+});

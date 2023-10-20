@@ -7,6 +7,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
@@ -17,13 +18,13 @@ class UserController extends Controller
 
 {
  
-    /*function __construct()
+    function __construct()
     {
          $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','store']]);
          $this->middleware('permission:user-create', ['only' => ['create','store']]);
          $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-    }*/
+    }
 
 /**
      * Display a listing of the resource.
@@ -126,7 +127,7 @@ class UserController extends Controller
 
 
 
-public function index(Request $request)
+/*this right codepublic function index(Request $request)
 {
     $roles = Role::all();
 
@@ -181,10 +182,146 @@ public function index(Request $request)
     }
 
     return view('users.index', compact('roles'));
+}*/
+
+
+
+
+
+/*public function index(Request $request)
+{
+    $roles = Role::all();
+
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('roles')
+            ->orderBy('created_at', 'desc');
+
+        if ($request->input('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->input('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->input('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->input('role'));
+            });
+        }
+
+        return DataTables()->eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->implode('name', ', ');
+            })
+            ->addColumn('action', function (User $user) {
+                $editRoute = route('users.edit', $user->id);
+                $showRoute = route('users.show', $user->id);
+                $deleteRoute = route('users.destroy', $user->id);
+
+                // Check if the user is authenticated
+                if (Auth::check()) {
+                    // Check if the user has permission to edit a role
+                    if (auth()->user()->can('user-edit')) {
+                        // User has permission to edit, display the 'Edit' button
+                        $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                    } else {
+                        // User doesn't have permission to edit, don't display the 'Edit' button
+                        $editButton = '';
+                    }
+                } else {
+                    // User is not authenticated, handle this case as needed
+                    $editButton = '';
+                }
+
+                return $editButton . 
+                       '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
+                       '<button data-id="' . $user->id . '" class="btn btn-danger delete-button">Delete</button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    if ($request->isMethod('delete')) {
+        $userId = $request->input('user_id');
+        dd($userId);
+        // Perform the actual deletion of the user here, for example:
+        User::destroy($userId);
+        
+        // Return a response indicating success
+        return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    return view('users.index', compact('roles'));
+}*/
+
+
+
+public function index(Request $request)
+{
+    $roles = Role::all();
+
+    if ($request->ajax()) {
+        $query = User::query()
+            ->with('roles')
+            ->orderBy('created_at', 'desc');
+
+        if ($request->input('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+
+        if ($request->input('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+
+        if ($request->input('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->input('role'));
+            });
+        }
+
+        return DataTables()->eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->implode('name', ', ');
+            })
+            ->addColumn('action', function (User $user) {
+                $editRoute = route('users.edit', $user->id);
+                $showRoute = route('users.show', $user->id);
+                $deleteRoute = route('users.destroy', $user->id);
+
+                $editButton = '';
+                $deleteButton = '';
+
+                if (Auth::check()) {
+                    if (auth()->user()->can('user-edit')) {
+                        $editButton = '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>';
+                    }
+                    if (auth()->user()->can('user-delete')) {
+                        $deleteButton = '<button data-id="' . $user->id . '" class="btn btn-danger delete-button">Delete</button>';
+                    }
+                }
+
+                return $editButton . 
+                       '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
+                       $deleteButton;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    if ($request->isMethod('delete')) {
+        if (auth()->user()->can('user-delete')) {
+            $userId = $request->input('user_id');
+            // Perform the actual deletion of the user here, for example:
+            User::destroy($userId);
+            // Return a response indicating success
+            return response()->json(['message' => 'User deleted successfully']);
+        }
+    }
+
+    return view('users.index', compact('roles'));
 }
-
-
-
 
 
 

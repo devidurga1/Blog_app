@@ -7,7 +7,9 @@
         <div class="col-md-100 text-center">--}}
       <h1 class="d-flex justify-content-center">User List <br /></h1>
          <div class="d-flex justify-content-center">
+            @can('create-user') 
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Create New User</a>
+        @endcan
          </div>
         <form  class="d-flex justify-content-center">
         
