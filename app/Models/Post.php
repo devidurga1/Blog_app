@@ -14,6 +14,7 @@ class Post extends Model
         'image',
        'auther_name',
        'user_id',
+       'comments_enabled',
 
 ];
 
@@ -24,8 +25,24 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
+    /*public function comments()
     {
         return $this->hasMany(Comment::class);
+    }*/
+
+    public function comments()
+
+    {
+
+        return $this->hasMany(Comment::class);
+
+    }
+
+    
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 }
+

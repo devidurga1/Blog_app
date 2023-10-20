@@ -74,5 +74,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <body>
 
   @yield('content')
+
 </body>
 </html>

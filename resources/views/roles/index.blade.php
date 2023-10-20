@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+@extends('layouts.aapp')
+@extends('layouts.sidebar')
+@section('content')
+
+
+{{--<!DOCTYPE html>
 <html>
 <head>
     <title>Blog_app</title>
@@ -12,13 +17,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 </head>
-<body>
+<body>--}}
     
 <div class="container">
-    <h2>Role List</h2>
-
+    <h2 class="d-flex justify-content-center">Role List</h2>
+<div class="d-flex justify-content-center">
+    @can('role-create')
     <a href="{{ route('roles.create') }}" class="btn btn-primary mb-2">Create New Role</a>
-
+    @endcan
+</div>
+    <div class="d-flex justify-content-center">
     <table class="table table-bordered" id="roles-table">
         <thead>
             <tr>
@@ -31,12 +39,14 @@
         </thead>
     </table>
 </div>
+</div>
 </body>
 <script>
 $(document).ready(function() {
     var table = $('#roles-table').DataTable({
         processing: true,
         serverSide: true,
+        searching:false,
         ajax: '{!! route("roles.index") !!}',
         columns: [
             { data: 'id', name: 'id' },
@@ -48,4 +58,5 @@ $(document).ready(function() {
     });
 });
 </script>
-</html>
+
+@endsection
