@@ -130,7 +130,7 @@ public function logout() {
     Session::flush();
     Auth::logout();
 
-    return Redirect('userview.userregister');
+    return Redirect('viewuser.userregister');
 }
 
 

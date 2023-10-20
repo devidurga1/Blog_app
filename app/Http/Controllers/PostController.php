@@ -66,7 +66,7 @@ public function index(Request $request)
                 $deleteRoute = route('posts.destroy', $post->id);
             
                 return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
-                       '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                       '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
                        '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
                             ' . csrf_field() . '
                             ' . method_field('DELETE') . '
@@ -157,7 +157,8 @@ public function index(Request $request)
     
  public function create()
 {
-    return view('posts.create');
+    $commentsEnabled = true;
+    return view('posts.create',compact('commentsEnabled'));
 }
 
 

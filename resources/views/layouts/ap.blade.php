@@ -61,6 +61,19 @@
     margin: 0 auto; /* Auto horizontal margin centers the image */
 }
 
+    /* Style the "Reply" link to make it look like a link */
+    .show-reply-link {
+        color: blue; /* You can adjust the color as needed */
+        text-decoration: underline; /* Add underline to mimic a link */
+        cursor: pointer; /* Change cursor to a hand pointer on hover */
+    }
+
+    .comment1 {
+        width: 100%;
+        height: 35px;
+        padding: 10px;
+        background-color: #d0e2bc;
+      }
 
 </style>
 

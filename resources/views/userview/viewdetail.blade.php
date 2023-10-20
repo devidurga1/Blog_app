@@ -36,6 +36,15 @@
             {{ $post->author_name }}
         </div>
     </div>
+
+
+    <div class="col-xs-12 col-sm-12 col-md-12 d-flex align-items-center justify-content-center">
+        <div class="form-group text-center">
+            <strong>Content:</strong>
+            {{ $post->content}}
+        </div>
+    </div>
+    
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
             {{--<strong>Image:</strong>--}}
@@ -46,12 +55,7 @@
     
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-12 d-flex align-items-center justify-content-center">
-    <div class="form-group text-center">
-        <strong>Content:</strong>
-        {{ $post->content}}
-    </div>
-</div>
+
 
 
 {{--<div class="comments">
@@ -108,7 +112,6 @@
 
 
 
-
     {{--<div class="add-comment">
         <button class="add-comment-button">Add Comment</button>
         <form class="comment-form" style="display: none;" action="{{ route('comments.store') }}" method="POST">
@@ -119,20 +122,29 @@
         </form>
     </div>--}}
 
-
-
-<form method="POST" action="{{ route('comments.store') }}">
+<div class="col-xs-12 col-sm-12 col-md-12 d-flex align-items-center justify-content-center">
+    @if ($post->comments_enabled === 1)
+    
+<form method="POST" action="{{ route('comments.store') }}" >
     @csrf
 
     <input type="hidden" name="post_id" value="{{ $post->id }}">
     
-    <div class="form-group">
-        <label for="message">Your Comment</label>
-        <textarea name="message" id="message" class="form-control" rows="4" required></textarea>
-    </div>
+    
+        <label for="message">add Comment</label><br>
+       {{--<textarea name="message" id="message" class="form-control" rows="4" required></textarea>--}}
+        <input type="text" id="message" name="message" id="name" >
 
-    <button type="submit" class="btn btn-primary">Submit Comment</button>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+    @else
+        <p>Comments are disabled for this post.</p>
+    @endif
+</div>
+</div>
+
 
 
 

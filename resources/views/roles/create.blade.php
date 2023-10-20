@@ -4,10 +4,10 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Create New Role</h2>
+            {{--<h2>Create New Role</h2>--}}
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
+           {{-- <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>--}}
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@
     </div>
 @endif
 
-
+<div class="d-flex justify-content-center">
 {!! Form::open(array('route' => 'roles.store','method'=>'POST')) !!}
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -50,6 +50,6 @@
 </div>
 {!! Form::close() !!}
 
-
+</div>
 
 @endsection

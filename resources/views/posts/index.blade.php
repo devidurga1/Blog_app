@@ -1,6 +1,5 @@
 @extends('layouts.aapp')
 @extends('layouts.sidebar')
-
 @section('content')
 
 
@@ -20,15 +19,18 @@
 </head>
 <body>--}}
     <div class="container">
-    <h1>Posts List <br/></h1>
+    <h1  class="d-flex justify-content-center">Posts List <br/></h1>
+    <div class="d-flex justify-content-center">
     <a href="{{ route('posts.create') }}" class="btn btn-primary mb-2">Create New Post</a>
-
+    </div>
 <!-- Search Bar -->
+<div class="d-flex justify-content-center">
 <div class="mb-3">
     <input type="text" id="search" placeholder="Search...">
     <button id="searchBtn" class="btn btn-primary">Search</button>
 </div>
-
+</div>
+<div class="d-flex justify-content-center">
 <table class="table table-bordered" id="posts-table">
     <thead>
         <tr>
@@ -44,9 +46,8 @@
     </thead>
 </table>
 </div>
+</div>
 
-
-</body>
 
 <script>
     $(document).ready(function() {

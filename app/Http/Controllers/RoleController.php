@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\DB;
 class RoleController extends Controller
 {
     
-    function __construct()
+   /* function __construct()
     {
          $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
          $this->middleware('permission:role-create', ['only' => ['create','store']]);
          $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-    }
+    }*/
 
 
     public function index(Request $request)
@@ -35,7 +35,7 @@ class RoleController extends Controller
                     $deleteRoute = route('roles.destroy', $role->id);
     
                     return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
-                           '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                           '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
                            '<form method="POST" action="' . $deleteRoute . '" style="display:inline;">
                                 ' . csrf_field() . '
                                 ' . method_field('DELETE') . '

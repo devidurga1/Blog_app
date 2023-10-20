@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Create New post</h2>
+           {{-- <h2>Create New post</h2>--}}
         </div>
         <div class="pull-right">
         </div>
@@ -25,7 +25,7 @@
     </div>
 @endif
 
-
+<div class="d-flex justify-content-center">
 <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
@@ -58,9 +58,68 @@
 
     <div class="form-check">
         <input type="checkbox" name="comments_enabled" id="comments_enabled" class="form-check-input" checked>
-        <label class="form-check-label" for="comments_enabled">Enable Comments</label>
+        <label class="form-check-label" for="comments_enabled">
+           
+        </label>
     </div> 
-    <button type="submit" class="btn btn-primary">Create Post</button>
+    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
+</div>
+    
+    {{--<script>
+        $(document).ready(function() {
+            // Check if the checkbox is initially checked
+            if ($("#comments_enabled").is(":checked")) {
+                $("#comment-form").show();
+            }
+    
+            $(".check").click(function() {
+                $("#comments_enabled").prop("checked", true);
+                $("#comment-form").show();
+            });
+    
+            $(".uncheck").click(function() {
+                $("#comments_enabled").prop("checked", false);
+                $("#comment-form").hide();
+            });
+        });
+    </script>--}}
+    
+    
+    
+    
+
+
+<script>
+    $(document).ready(function() {
+        // Check if the checkbox is initially checked
+        if ($("#comments_enabled").is(":checked")) {
+            // If checked, show the form
+            $("#comment-form").show();
+        } else {
+            // If not checked, hide the form
+            $("#comment-form").hide();
+        }
+
+        // Add a change event listener to the checkbox
+        $("#enableForm").change(function() {
+            if ($(this).is(":checked")) {
+                $("#comment-form").show();
+            } else {
+                $("#comment-form").hide();
+
+
+            }
+        });
+    });
+</script>
+    
+    
+    
+    
+    
+
 
 @endsection

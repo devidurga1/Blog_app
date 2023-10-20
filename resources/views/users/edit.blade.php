@@ -4,10 +4,10 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Edit New User</h2>
+           {{--} <h2>Edit New User</h2>--}}
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
+           {{--<a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>--}}
         </div>
     </div>
 </div>
@@ -24,7 +24,7 @@
   </div>
 @endif
 
-
+<div class="d-flex justify-content-center">
 {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id]]) !!}
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -78,6 +78,6 @@
 </div>
 {!! Form::close() !!}
 
-
+</div>
 
 @endsection

@@ -6,9 +6,9 @@
 <div class="comments">
     @foreach($post->comments as $comment)
         <div class="comment">
-            <p><strong>{{ $comment->user->name }}:</strong> {{ $comment->message }}</p>
-            <p>Commented on {{ $comment->created_at }}</p>
-            <button class="show-replies-button">Reply</button>
+            <textarea><strong>{{ $comment->user->name }}:</strong> {{ $comment->message }}</textarea>
+            {{--<p>Commented on {{ $comment->created_at }}</p>
+            <button class="show-replies-button">Reply</button>--}}
             <div class="replies" style="display: none;">
                 @foreach($comment->replies as $reply)
                     <div class="reply">

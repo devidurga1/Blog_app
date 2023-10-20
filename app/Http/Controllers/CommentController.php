@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -49,6 +50,44 @@ class CommentController extends Controller
         // Redirect back with a success message or to the post where the comment was added
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
+
+
+    /*public function replyStore(Request $request)
+    {
+        $reply = new Comment();
+
+        $reply->message = $request->get('message');
+
+        $reply->user()->associate($request->user());
+
+        $reply->parent_id = $request->get('comment_id');
+
+        $post = Post::find($request->get('post_id'));
+
+        $post->comments()->save($reply);
+
+        return back();
+
+    }*/
+
+
+    public function reply(Request $request)
+{
+    $request->validate([
+        'message' => 'required',
+        'post_id' => 'required',
+        'comment_id' => 'required',
+    ]);
+
+    $comment = new Comment();
+    $comment->message = $request->input('message');
+    $comment->post_id = $request->input('post_id');
+    $comment->parent_id = $request->input('comment_id');
+    $comment->user_id = auth()->user()->id;
+    $comment->save();
+
+    return redirect()->back()->with('success');
+}
 
     // ...
 }

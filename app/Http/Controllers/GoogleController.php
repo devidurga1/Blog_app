@@ -4,11 +4,14 @@
 namespace App\Http\Controllers;
     
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Session;
+
   
 
 class GoogleController extends Controller
@@ -47,7 +50,7 @@ class GoogleController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id'=> $user->id,
-                    'password' => encrypt('123456dummy')
+                    'password' => Str::random(16)
                 ]);
       
                 Auth::login($newUser);
@@ -55,8 +58,13 @@ class GoogleController extends Controller
                 return redirect()->intended('viewall');
             }
       
-        } catch (Exception $e) {
-            dd($e->getMessage());
+        } 
+
+        
+        
+        catch (Exception $e) {
+           // dd($e->getMessage());
+           return redirect('userlogin')->with('error', 'Google login failed: ' . $e->getMessage());
         }
     }
 }

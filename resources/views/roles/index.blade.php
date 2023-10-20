@@ -1,6 +1,5 @@
 @extends('layouts.aapp')
 @extends('layouts.sidebar')
-
 @section('content')
 
 
@@ -21,10 +20,11 @@
 <body>--}}
     
 <div class="container">
-    <h2>Role List</h2>
-
+    <h2 class="d-flex justify-content-center">Role List</h2>
+<div class="d-flex justify-content-center">
     <a href="{{ route('roles.create') }}" class="btn btn-primary mb-2">Create New Role</a>
-
+</div>
+    <div class="d-flex justify-content-center">
     <table class="table table-bordered" id="roles-table">
         <thead>
             <tr>
@@ -36,6 +36,7 @@
             </tr>
         </thead>
     </table>
+</div>
 </div>
 </body>
 <script>

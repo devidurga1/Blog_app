@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,13 +17,13 @@ class UserController extends Controller
 
 {
  
-    function __construct()
+    /*function __construct()
     {
          $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','store']]);
          $this->middleware('permission:user-create', ['only' => ['create','store']]);
          $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
          $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-    }
+    }*/
 
 /**
      * Display a listing of the resource.
@@ -129,6 +130,7 @@ public function index(Request $request)
 {
     $roles = Role::all();
 
+
     if ($request->ajax()) {
         $query = User::query()
             ->with('roles')
@@ -157,8 +159,11 @@ public function index(Request $request)
                 $showRoute = route('users.show', $user->id);
                 $deleteRoute = route('users.destroy', $user->id);
 
+                
+                
+   
                 return '<a href="' . $editRoute . '" class="btn btn-primary">Edit</a>' .
-                    '<a href="' . $showRoute . '" class="btn btn-success">Show</a>' .
+                    '<a href="' . $showRoute . '" class="btn btn-success">View</a>' .
                     '<button data-id="' . $user->id . '" class="btn btn-danger delete-button">Delete</button>';
             })
             ->rawColumns(['action'])

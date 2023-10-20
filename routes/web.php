@@ -36,9 +36,13 @@ Route::get('login', [AuthController::class, 'index'])->name('login');
     Route::get('register', [AuthController::class, 'registerView'])->name('register');
     Route::post('register', [AuthController::class, 'register'])->name('register');
 // this route  for dashboard
-    Route::get('dashboard', [AuthController::class, 'dashboard']);
-// this route  for users curd ..
-Route::resource('users', UserController::class);
+
+    //Route::get('dashboard', [AuthController::class, 'dashboard']);
+    Route::resource('users', UserController::class);
+    //Route::resource('roles', RoleController::class);
+
+
+//Route::resource('users', UserController::class);
 
 //Route::get('users', [UserController::class, 'index'])->name('users');
 
@@ -67,7 +71,7 @@ Route::post('userlogin', [RoleUserController::class, 'Login'])->name('userlogin'
 
 Route::post('/comments', [CommentController::class,'store'])->name('comments.store');
 
-Route::get('/viewall', [RoleUserController::class,'viewall'])->name('viewall');
+ //Route::get('/viewall', [RoleUserController::class,'viewall'])->name('viewall');
 Route::get('/viewdetail/{id}', [RoleUserController::class,'show'])->name('userview.viewdetail');
 
 Route::get('userdashboard', [RoleUserController::class, 'dashboard']);
@@ -86,3 +90,17 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::get('/welcomeuser', function () {
     return view('welcomeuser');
 });
+
+Route::group(['middleware'=>['auth','CheckUserRole:user']],function(){
+    Route::get('/viewall', [RoleUserController::class,'viewall'])->name('viewall');
+});
+Route::get('dashboard', [AuthController::class, 'dashboard']);
+
+Route::group(['middleware'=>['IsAdmin',':admin']],function(){
+    //Route::get('dashboard', [AuthController::class, 'dashboard']);
+
+});
+
+//Route::post('/reply/store', [CommentController::class,'replyStore'])->name('reply.add');
+
+Route::post('/reply', [CommentController::class,'Reply'])->name('reply.add');

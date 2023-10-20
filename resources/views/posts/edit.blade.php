@@ -7,9 +7,9 @@
         <div class="pull-left">
             <h2>Edit User</h2>
         </div>
-        <div class="pull-right">
+       {{-- <div class="pull-right">
             <a class="btn btn-primary" href="{{ route('posts.index') }}"> Back</a>
-        </div>
+        </div>--}}
     </div>
 </div>
 
@@ -26,7 +26,7 @@
 @endif-->
 <!--<h3>Edit Users</h3>-->
 <!--<a href="{{ route('posts.index') }}" class="btn btn-dark mb-2">BACK</a>-->
-
+<div class="d-flex justify-content-center">
 <form action="{{ route('posts.update' , $post->id)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
@@ -63,4 +63,5 @@
        
     <button type="submit" class="btn btn-dark px-4">update post</button>
 </form>
+</div>
 @endsection

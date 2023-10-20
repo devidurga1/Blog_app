@@ -1,12 +1,16 @@
 @extends('layouts.aapp')
 @extends('layouts.sidebar')
-
-@section('content')
+@section('content')  
+<div class="d-flex justify-content-center">
 <div class="container">
- <h1>User List <br /></h1>
+    {{--<div class="row">
+        <div class="col-md-100 text-center">--}}
+      <h1 class="d-flex justify-content-center">User List <br /></h1>
+         <div class="d-flex justify-content-center">
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-2">Create New User</a>
-        <form>
-
+         </div>
+        <form  class="d-flex justify-content-center">
+        
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" id="name" placeholder="Enter Name">
 
@@ -91,7 +95,8 @@
             });
         });
     </script>--}}
-    <table class="table table-bordered" id="users-table">
+    <div class="d-flex justify-content-center">
+    <table class="table table-bordered table-center" id="users-table">
         <thead>
             <tr>
                 <th>No</th>
@@ -103,7 +108,10 @@
             </tr>
         </thead>
     </table>
-    
+</div>
+</div>
+</div>
+
     <script>
         $(document).ready(function() {
             var table = $('#users-table').DataTable({
@@ -174,6 +182,8 @@
         });
     </script>
     
+
+
 
 
 @endsection

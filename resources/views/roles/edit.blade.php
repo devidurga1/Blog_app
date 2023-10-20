@@ -24,7 +24,7 @@
         </ul>
     </div>
 @endif
-
+<div class="d-flex justify-content-center">
 
 {!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id]]) !!}
 <div class="row">
@@ -50,6 +50,6 @@
     </div>
 </div>
 {!! Form::close() !!}
-
+</div>
 
 @endsection

@@ -30,8 +30,8 @@
                     @else
                         <a href="{{ route('userlogin') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
                           
-                        <a href="{{ route('logout') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">
-                            Logout</a>
+                        {{--<a href="{{ route('logout') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">
+                            Logout</a>--}}
                             
 
 
@@ -49,7 +49,7 @@
 
                 <div class="content">
                     <!--image path-->
-                    <img src="/images/b.jpg" alt="pizza house logo">
+                    <img src="/images/e.jpg" alt="pizza house logo">
                     <div class="title m-b-md">
                         The North's Best Pizzas
                     </div>
